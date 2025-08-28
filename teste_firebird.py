@@ -11,7 +11,7 @@ con = fdb.connect(
     password='7123456', # senha pra conexão do banco 
     charset='UTF8' 
 )
-
+#teste do gitignore
 cur = con.cursor() # cria um cursor pra fazer as consultas
 # 1 - Pega o primeiro registro
 
@@ -22,3 +22,5 @@ for row in cur.fetchall(): # pega todos os registros retornados pela consulta e 
     print(row)
 
 con.close() # fecha a conexão com o banco de dados
+
+#teste de commit
