@@ -1,9 +1,21 @@
 from model.database import executar_select
 from view.graficos import GraficoBarras, GraficoPizza, GraficoLinha
 
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return render_template("index.html", nome="Yuri")
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+
 def rodar():
     # Exemplo: buscar dados do banco
-    sql = "SELECT NOME, IDADE FROM SEGURADOS_DEPENDENTES ROWS 10"
+    sql = "SELECT NOME,  FROM SEGURADOS_DEPENDENTES ROWS 10"
     dados = executar_select(sql)
 
     # Separar em listas (nome e idade)
