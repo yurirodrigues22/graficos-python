@@ -52,7 +52,7 @@ def consultar(analise: str):
         ORDER BY 1
     """
 
-    sql_titular = """
+    sql_titular_dependente = """
         SELECT 
             CASE WHEN SEQDEP = 0 THEN 'Titular' ELSE 'Dependente' END AS tipo,
             COUNT(*)
@@ -61,7 +61,7 @@ def consultar(analise: str):
 
     """
     
-    sql_situacao = """
+    sql_situacao_dependentes = """
         SELECT 
             CASE WHEN SITUACAO = 1 THEN 'Ativo' ELSE 'Inativo' END AS status,
             COUNT(*)
@@ -69,7 +69,16 @@ def consultar(analise: str):
         GROUP BY CASE WHEN SITUACAO = 1 THEN 'Ativo' ELSE 'Inativo' END
     """
     
-    sql_dependentes_parentesco = """
+    sql_alerta_dependentes = """
+        SELECT 
+            CASE WHEN MSG_ALERTA IS NOT NULL AND MSG_ALERTA <> '' THEN 'Com alerta' ELSE 'Sem alerta' END AS alerta,
+            COUNT(*)
+        FROM VW_SEGDEP
+        GROUP BY CASE WHEN MSG_ALERTA IS NOT NULL AND MSG_ALERTA <> '' THEN 'Com alerta' ELSE 'Sem alerta' END
+
+    """
+    
+    sql_parentesco_dependentes = """
        SELECT 
             CASE 
                 WHEN IDGRAU_PARENTESCO = 1 THEN 'Cônjuge'
@@ -87,8 +96,15 @@ def consultar(analise: str):
                 WHEN IDGRAU_PARENTESCO = 3 THEN 'Pai/Mãe'
                 ELSE 'Desconhecido'
             END
-
-
+    """
+    
+    sql_sexo_titulares = """
+        SELECT 
+            CASE WHEN SEXO = 'M' THEN 'Masculino' ELSE 'Feminino' END AS genero,
+            COUNT(*)
+        FROM VW_SEGDEP
+        WHERE SEQDEP = 0
+        GROUP BY genero
 
     """
 
@@ -108,14 +124,7 @@ def consultar(analise: str):
             END
     """
     
-    sql_alerta = """
-        SELECT 
-            CASE WHEN MSG_ALERTA IS NOT NULL AND MSG_ALERTA <> '' THEN 'Com alerta' ELSE 'Sem alerta' END AS alerta,
-            COUNT(*)
-        FROM VW_SEGDEP
-        GROUP BY CASE WHEN MSG_ALERTA IS NOT NULL AND MSG_ALERTA <> '' THEN 'Com alerta' ELSE 'Sem alerta' END
 
-    """
     
 
     # -----------------------------
@@ -127,16 +136,19 @@ def consultar(analise: str):
             return (['Masculino', 'Feminino'], [0])
         elif analise == 'idade':
             return (['0-9', '10-17', '18-25', '26-39', '40-59', '60+'], [0])
-        elif analise == 'titular':
+        elif analise == 'titular_dependente':
             return (['Titular', 'Dependente'], [0])
-        elif analise == 'situacao':
+        elif analise == 'situacao_dependentes':
             return (['Ativos', 'Inativos'], [0])
-        elif analise == 'dependentes_parentesco':
+        elif analise == 'alerta_dependentes':
+            return (['Com alerta', 'Sem alerta'], [0])
+        elif analise == 'parentesco_dependentes':
             return (['Cônjuge', 'Filho(a)', 'Outro'], [0])
+        elif analise == 'sexo_titulares':
+            return (['Masculino', 'Feminino'], [0])
         elif analise == 'carteira':
             return (['Nova', 'Antiga', 'Nenhuma'], [0])
-        elif analise == 'alerta':
-            return (['Com alerta', 'Sem alerta'], [0])
+       
       
 
     # -----------------------------
@@ -145,11 +157,13 @@ def consultar(analise: str):
     query = {
         "sexo": sql_sexo,
         "idade": sql_idade,
-        "titular": sql_titular,
-        "situacao": sql_situacao,
-        "dependentes_parentesco": sql_dependentes_parentesco,
+        "titular": sql_titular_dependente,
+        "situacao": sql_situacao_dependentes,
+        "alerta": sql_alerta_dependentes,
+        "dependentes_parentesco": sql_parentesco_dependentes,
+        "sexo_titulares": sql_sexo_titulares,
         "carteira": sql_carteira,
-        "alerta": sql_alerta,
+        
     }.get(analise)
 
     # -----------------------------
@@ -163,19 +177,21 @@ def consultar(analise: str):
     except Exception:
         # Se der erro no banco, devolve fallback com valores zerados
         if analise == 'sexo':
-            return (['Masculino', 'Feminino'], [0, 0])
+            return (['Masculino', 'Feminino'], [0])
         elif analise == 'idade':
             return (['0-9', '10-17', '18-25', '26-39', '40-59', '60+'], [0])
-        elif analise == 'titular':
+        elif analise == 'titular_dependente':
             return (['Titular', 'Dependente'], [0])
-        elif analise == 'situacao':
-            return (['Ativos', 'Inativos'], [0, 0])
-        elif analise == 'dependentes_parentesco':
-            return (['Cônjuge', 'Filho(a)', 'Outro'], [0, 0, 0])
-        elif analise == 'carteira':
-            return (['Nova', 'Antiga', 'Nenhuma'], [0, 0, 0])
-        elif analise == 'alerta':
+        elif analise == 'situacao_dependentes':
+            return (['Ativos', 'Inativos'], [0])
+        elif analise == 'alerta_dependentes':
             return (['Com alerta', 'Sem alerta'], [0])
+        elif analise == 'parentesco_dependentes':
+            return (['Cônjuge', 'Filho(a)', 'Outro'], [0])
+        elif analise == 'sexo_titulares':
+            return (['Masculino', 'Feminino'], [0])
+        elif analise == 'carteira':
+            return (['Nova', 'Antiga', 'Nenhuma'], [0])
         
 
 # -----------------------------
