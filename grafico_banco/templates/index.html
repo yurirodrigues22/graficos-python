@@ -6,24 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Dashboard - Gráficos</title>
 
-    <!-- Bootstrap -->
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> -->
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <!-- Estilo custom -->
     <link href="../static/style.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
 </head>
 
 <body class="viewport">
 
-    <nav class="">
-        <div class="">
-            <h2 class="" href="/">Dashboard Analytics</h2>
+    <nav>
+        <div>
+            <h2>Dashboard Analytics</h2>
         </div>
     </nav>
 
-    <div class="">
-        
+    <div>
         <div class="content">
             <div class="box card-um">
                 <h1 class="sub-titulo">Análise de Dados</h1>
@@ -34,7 +32,14 @@
                         <p>
                             <select id="analise" class="form-select form-select-lg">
                                 <option value="sexo">Distribuição por Sexo</option>
-                                <option value="idade">Perfil Etário da População
+                                <option value="idade">Perfil Etário da População</option>
+                                <option value="titular">Distribuição por Tipo</option>
+                                <option value="situacao">Situação dos Dependentes</option>
+                                <option value="alerta">Dependentes com Alerta</option>
+                                <option value="dependentes_parentesco">Dependentes por Grau de Parentesco</option>
+                                <option value="carteira">Carteira Unimed</option>
+                                
+                             
                             </select>
                         </p>
                     </div>
@@ -56,37 +61,30 @@
                 </form>
             </div>
 
-
             <div class="box card-dois">
                 <div class="card shadow-lg border-0 rounded-4 p-4 mt-5">
                     <h2 class="h4 fw-bold text-secondary mb-3">Resultado</h2>
-                    <div class="ratio ratio-16x9">
-                        <canvas id="grafico"></canvas>
-                    </div>
+                    <canvas id="grafico"></canvas>
                 </div>
             </div>
         </div>
     </div>
-
 
     <footer class="text-center py-4 bg-light border-top mt-5">
         <p class="mb-0 text-muted">Desenvolvido para análise de dados — 2025</p>
     </footer>
 
     <script>
-        const ctx = document.getElementById('grafico');
+        const ctx = document.getElementById('grafico').getContext('2d');
         let chart = null;
 
         function cores(n) {
-            // Paleta simples e distinta (repete se necessário)
             const base = [
-                '#4e79a7', '#76b7b2', '#e15759', 
+                '#4e79a7', '#76b7b2', '#e15759',
                 '#59a14f', '#edc948', '#b07aa1', '#ff9da7',
                 '#9c755f', '#bab0ab'
             ];
-            const arr = [];
-            for (let i = 0; i < n; i++) arr.push(base[i % base.length]);
-            return arr;
+            return Array.from({ length: n }, (_, i) => base[i % base.length]);
         }
 
         async function desenhar() {
@@ -96,14 +94,18 @@
             const res = await fetch(`/api/dados?analise=${analise}`);
             const data = await res.json();
 
+            // fallback se não vier nada
+            const labels = data.labels && data.labels.length ? data.labels : ["Sem dados"];
+            const valores = data.valores && data.valores.length ? data.valores : [0];
+
             const cfg = {
                 type: tipo,
                 data: {
-                    labels: data.labels,
+                    labels: labels,
                     datasets: [{
                         label: 'Quantidade',
-                        data: data.valores,
-                        backgroundColor: tipo === 'pie' ? cores(data.labels.length) : cores(1),
+                        data: valores,
+                        backgroundColor: tipo === 'pie' ? cores(labels.length) : cores(1),
                         borderColor: '#1f2d3d',
                         borderWidth: tipo === 'pie' ? 0 : 1,
                         tension: 0.3,
@@ -116,7 +118,13 @@
                         legend: { display: tipo === 'pie' },
                         title: {
                             display: true,
-                            text: analise === 'sexo' ? 'Distribuição por Sexo' : 'Distribuição por Idade'
+                            text:
+                                analise === 'sexo' ? 'Distribuição por Sexo' :
+                                    analise === 'idade' ? 'Distribuição por Faixa Etária' :
+                                        analise === 'situacao' ? 'Situação dos Dependentes' :
+                                            analise === 'carteira' ? 'Carteira Unimed' :
+                                                analise === 'titular' ? 'Distribuição por Tipo (Titular x Dependente)' :
+                                                    'Análise'
                         },
                         tooltip: { enabled: true }
                     },
@@ -135,7 +143,6 @@
             desenhar();
         });
 
-        // Desenha ao carregar
         window.addEventListener('DOMContentLoaded', desenhar);
     </script>
 </body>
