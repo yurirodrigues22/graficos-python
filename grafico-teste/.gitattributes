@@ -1,0 +1,2 @@
+grafico-teste/dist/*.exe filter=lfs diff=lfs merge=lfs -text
+grafico-teste/build/**/*.pkg filter=lfs diff=lfs merge=lfs -text
