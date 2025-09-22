@@ -8,3 +8,7 @@ grafico_banco/build/
 # Python cache
 __pycache__/
 *.pyc
+
+.venv/
+grafico-teste/build/
+grafico-teste/dist/
