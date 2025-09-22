@@ -1,2 +1,10 @@
-grafico-teste/dist/
-grafico-teste/build/
+# Virtual environment
+grafico-teste/.venv/
+
+# Build/output
+grafico_banco/dist/
+grafico_banco/build/
+
+# Python cache
+__pycache__/
+*.pyc
