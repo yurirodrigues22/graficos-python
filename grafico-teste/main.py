@@ -2,7 +2,7 @@
 # Imports
 # -----------------------------
 import flet as ft                # Biblioteca Flet para criar interfaces gráficas com Python
-from flet import Page, Icons     # Importando tipos específicos do Flet
+from flet import Page, icons     # Importando tipos específicos do Flet
 import pandas as pd              # Pandas para manipulação de dados (tabelas)
 import seaborn as sns            # Seaborn para gráficos
 import matplotlib.pyplot as plt  # Matplotlib para geração de gráficos
@@ -143,7 +143,7 @@ def render_tab(page: Page, titulo: str, opcoes_map: dict, cor: str, metric_label
     # Cartão KPI (mostra número total)
     kpi_card = ft.Container(
         content=ft.Column([
-            ft.Icon(Icons.PEOPLE, size=28, color="#EAA900"),
+            ft.Icon(icons.PEOPLE, size=28, color="#EAA900"),
             ft.Text("0", size=28, weight="bold"),  # número dinâmico
             ft.Text(metric_label, size=12, color="#555555")
         ], alignment=ft.MainAxisAlignment.CENTER),
