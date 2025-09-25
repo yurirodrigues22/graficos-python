@@ -33,17 +33,20 @@ MAP_GERAL = {
     "Carteira (Segurados)": "carteira_segurados",
     "Titular vs Dependente": "titular"
 }
-
-MAP_TITULAR = { 
+MAP_TITULAR = {
     "Sexo (Titulares)": "sexo_titulares",
     "Carteira (Titulares)": "carteira_titulares",
+    "Tempo de vínculo (Titulares)": "tempo_vinculo_titulares",
+    "Dependentes (Titulares)": "dependentes_por_titular",
+    
 }
-
 MAP_DEP = {
     "Parentesco (Dependentes)": "parentesco_dependentes",
     "Situação (Dependentes)": "situacao_dependentes",
     "Alerta (Dependentes)": "alerta_dependentes"
+    
 }
+
 
 
 # -----------------------------
