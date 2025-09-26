@@ -13,7 +13,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-from queries import QUERIES, FALLBACK
+from app.queries import QUERIES, FALLBACK
 
 # tenta importar a função que executa selects (do seu projeto)
 try:
@@ -31,20 +31,26 @@ MAP_GERAL = {
     "Alerta (Segurados)": "alerta_segurados",
     "Situação (Segurados)": "situacao_segurados",
     "Carteira (Segurados)": "carteira_segurados",
-    "Titular vs Dependente": "titular"
+    "Titular vs Dependente": "titular",
 }
+
 MAP_TITULAR = {
     "Sexo (Titulares)": "sexo_titulares",
+    "Idade (Titulares)": "idade_titulares",
+    "Alerta (Titulares)": "alerta_titulares",
+    "Situação (Titulares)": "situacao_titulares",
     "Carteira (Titulares)": "carteira_titulares",
     "Tempo de vínculo (Titulares)": "tempo_vinculo_titulares",
     "Dependentes (Titulares)": "dependentes_por_titular",
-    
 }
+
 MAP_DEP = {
-    "Parentesco (Dependentes)": "parentesco_dependentes",
+    "Sexo (Dependentes)": "sexo_dependentes",
+    "Idade (Dependentes)": "idade_dependentes",
+    "Alerta (Dependentes)": "alerta_dependentes",
     "Situação (Dependentes)": "situacao_dependentes",
-    "Alerta (Dependentes)": "alerta_dependentes"
-    
+    "Carteira (Dependentes)": "carteira_dependentes",
+    "Parentesco (Dependentes)": "parentesco_dependentes",
 }
 
 
