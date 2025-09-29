@@ -4,6 +4,8 @@ from app.ui.tabs import render_tab
 from app.ui.theme import tema_claro, tema_escuro
 from app.settings import MAP_GERAL, MAP_TITULAR, MAP_DEP
 
+
+
 def main(page: ft.Page):
     tema_atual = {"modo": "claro"}
 
@@ -14,7 +16,7 @@ def main(page: ft.Page):
     page.bgcolor = page.theme.color_scheme.background
     page.padding = ft.padding.all(16)
     page.font_family = "Inter"
-    page.window_icon = resource_path("icone.ico")
+    page.window_icon = resource_path("icon.ico")
 
     botao_tema = ft.IconButton(icon=ft.icons.DARK_MODE, tooltip="Alternar tema")
 
